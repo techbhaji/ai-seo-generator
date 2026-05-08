@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI SEO Generator — by Tech Bhaji</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>AI SEO Generator</h1>
+            <p class="subtitle">by Tech Bhaji</p>
+        </header>
+
+        <main>
+            <section class="input-section card">
+                <div class="form-group">
+                    <label for="apiKey">OpenAI API Key <span class="required">*</span></label>
+                    <input type="password" id="apiKey" placeholder="sk-..." required>
+                    <small>Stored locally in your browser</small>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="keyword">Target Keyword <span class="required">*</span></label>
+                        <input type="text" id="keyword" placeholder="e.g. Best wireless earbuds" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="industry">Industry/Niche <span class="required">*</span></label>
+                        <input type="text" id="industry" placeholder="e.g. Consumer Electronics" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tone">Tone of Voice</label>
+                        <select id="tone">
+                            <option value="Professional">Professional</option>
+                            <option value="Conversational">Conversational</option>
+                            <option value="Informative">Informative</option>
+                            <option value="Persuasive">Persuasive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="language">Language</label>
+                        <select id="language">
+                            <option value="English">English</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Punjabi">Punjabi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="generateBtn" class="primary-btn">
+                    <span class="btn-text">Generate SEO Content</span>
+                    <div class="spinner hidden" id="loadingSpinner"></div>
+                </button>
+                <div id="errorMessage" class="error-message hidden"></div>
+            </section>
+
+            <section id="outputSection" class="output-section hidden">
+                <div class="output-header">
+                    <h2>Generated Content</h2>
+                    <button id="downloadBtn" class="secondary-btn">Download All (.txt)</button>
+                </div>
+
+                <div class="output-grid">
+                    <!-- SEO Title Card -->
+                    <div class="output-card card">
+                        <div class="card-header">
+                            <h3>SEO Title</h3>
+                            <button class="icon-btn copy-btn" data-target="titleOutput" title="Copy">📋</button>
+                        </div>
+                        <div class="card-body">
+                            <p id="titleOutput" class="output-text"></p>
+                        </div>
+                        <div class="card-footer">
+                            <span class="char-count" id="titleCount">0/60 characters</span>
+                        </div>
+                    </div>
+
+                    <!-- Meta Description Card -->
+                    <div class="output-card card">
+                        <div class="card-header">
+                            <h3>Meta Description</h3>
+                            <button class="icon-btn copy-btn" data-target="metaOutput" title="Copy">📋</button>
+                        </div>
+                        <div class="card-body">
+                            <p id="metaOutput" class="output-text"></p>
+                        </div>
+                        <div class="card-footer">
+                            <span class="char-count" id="metaCount">0/155 characters</span>
+                        </div>
+                    </div>
+
+                    <!-- Content Brief Card -->
+                    <div class="output-card card full-width">
+                        <div class="card-header">
+                            <h3>Content Brief</h3>
+                            <button class="icon-btn copy-btn" data-target="briefOutput" title="Copy">📋</button>
+                        </div>
+                        <div class="card-body">
+                            <div id="briefOutput" class="output-text">
+                                <p><strong>Target Audience:</strong> <span id="targetAudience"></span></p>
+                                <p><strong>Search Intent:</strong> <span id="searchIntent"></span></p>
+                                <p><strong>Suggested Word Count:</strong> <span id="wordCount"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LSI Keywords Card -->
+                    <div class="output-card card full-width">
+                        <div class="card-header">
+                            <h3>LSI Keywords</h3>
+                            <button class="icon-btn copy-btn" data-target="lsiOutput" title="Copy">📋</button>
+                        </div>
+                        <div class="card-body">
+                            <div id="lsiOutput" class="output-tags"></div>
+                        </div>
+                    </div>
+
+                    <!-- Blog Outline Card -->
+                    <div class="output-card card full-width">
+                        <div class="card-header">
+                            <h3>Blog Outline</h3>
+                            <button class="icon-btn copy-btn" data-target="outlineOutput" title="Copy">📋</button>
+                        </div>
+                        <div class="card-body">
+                            <div id="outlineOutput" class="output-html"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
