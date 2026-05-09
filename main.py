@@ -26,7 +26,7 @@ def generate_seo_content(req: GenerateRequest):
         raise HTTPException(status_code=400, detail="API Key is required.")
     
     genai.configure(api_key=req.api_key)
-    model = genai.GenerativeModel('gemini-pro', generation_config={"response_mime_type": "application/json"})
+    model = genai.GenerativeModel('gemini-1.0-pro', generation_config={"response_mime_type": "application/json"})
     
     prompt = f"""You are an expert AI SEO content generator.
 Generate SEO content based on the following parameters:
