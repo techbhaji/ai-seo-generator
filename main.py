@@ -27,5 +27,9 @@ def generate_seo_content(req: GenerateRequest):
     model = genai.GenerativeModel("gemini-1.5-flash-latest")
     prompt = f"""You are an expert SEO content strategist. Generate SEO content for keyword: "{req.keyword}" Industry: {req.industry}, Tone: {req.tone}, Language: {req.language}. Return ONLY valid JSON with keys: seo_title, meta_description, blog_outline, lsi_keywords, content_brief"""
     response = model.generate_content(prompt)
-    text = response.text.strip().replace("```json", "").replace("```", "").strip()
-    return json.loads(text)
+    raw = response.text.strip()
+    import re
+    match = re.search(r"\{.*\}", raw, re.DOTALL)
+    if match:
+        return json.loads(match.group())
+    return {"error": raw}
