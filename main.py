@@ -3,8 +3,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-import openai
-from openai import OpenAI
+import google.generativeai as genai
 
 app = FastAPI()
 
@@ -26,7 +25,8 @@ def generate_seo_content(req: GenerateRequest):
     if not req.api_key:
         raise HTTPException(status_code=400, detail="API Key is required.")
     
-    client = OpenAI(api_key=req.api_key)
+    genai.configure(api_key=req.api_key)
+    model = genai.GenerativeModel('gemini-1.5-flash', generation_config={"response_mime_type": "application/json"})
     
     prompt = f"""You are an expert AI SEO content generator.
 Generate SEO content based on the following parameters:
@@ -49,17 +49,13 @@ Provide a JSON response with exactly the following structure:
 }}"""
 
     try:
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant designed to output pure JSON."},
-                {"role": "user", "content": prompt}
-            ],
-            response_format={ "type": "json_object" }
+        response = model.generate_content(
+            f"You are a helpful assistant designed to output pure JSON.\n\n{prompt}"
         )
-        content = response.choices[0].message.content
+        content = response.text
         return json.loads(content)
-    except openai.AuthenticationError:
-        raise HTTPException(status_code=401, detail="Invalid OpenAI API Key.")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        error_msg = str(e)
+        if "API_KEY_INVALID" in error_msg or "API key not valid" in error_msg or "400 API key not valid" in error_msg:
+            raise HTTPException(status_code=401, detail="Invalid Gemini API Key.")
+        raise HTTPException(status_code=500, detail=error_msg)

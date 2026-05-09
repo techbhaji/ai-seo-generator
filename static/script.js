@@ -23,14 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const outlineOutput = document.getElementById('outlineOutput');
 
     // Load saved API key
-    const savedKey = localStorage.getItem('openai_api_key');
+    const savedKey = localStorage.getItem('gemini_api_key');
     if (savedKey) {
         apiKeyInput.value = savedKey;
     }
 
     // Save API key on change
     apiKeyInput.addEventListener('change', (e) => {
-        localStorage.setItem('openai_api_key', e.target.value);
+        localStorage.setItem('gemini_api_key', e.target.value);
     });
 
     let currentData = null; // Store data for download
